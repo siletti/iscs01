@@ -1,6 +1,7 @@
 package com.siletti.iscs;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,15 @@ import java.util.Optional;
 
 public abstract class MyFixedWidthParser {
 
-     int tryParseIntLast3Chars(String value) {
+    List<String[]> theList;
+
+    public MyFixedWidthParser(File file) throws IOException {
+        this.theList = getTheList(file);
+    }
+
+    abstract List<String[]> getTheList(File inputFile) throws IOException;
+
+    int tryParseIntLast3Chars(String value) {
 
         String last3Digits;     //substring that will contain last 3 characters
 
@@ -26,7 +35,9 @@ public abstract class MyFixedWidthParser {
     }
 
 
-    String getKeyWithMinIntVal(Map<String, Integer> myMap) {
+    String getKeyWithMinIntVal() {
+
+        Map<String, Integer> myMap = stringIntegerMap();
 
         Optional<Map.Entry<String, Integer>> myMinEntry = myMap.entrySet()
                 .stream()
@@ -35,8 +46,7 @@ public abstract class MyFixedWidthParser {
         return myMinEntry.get().getKey();
     }
 
-    abstract List<String[]> getTheList(File inputFile);
 
-    abstract Map<String, Integer> stringIntegerMap (List<String[]> myRows);
+    abstract Map<String, Integer> stringIntegerMap();
 
 }
